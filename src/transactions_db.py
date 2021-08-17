@@ -1,24 +1,30 @@
 import csv
-from src.transaction import Transaction
-from src.exchangeratesapi import ExchangeRates
+from transaction import Transaction
+from exchangeratesapi import ExchangeRates
 
 class TransactionsDB():
-    def __init__(self, file_name):
-        #save only the file name, don't load the data until it is used, row by row.
-        self.file_name = file_name
+    def __init__(self):
         self.exchanges = ExchangeRates()
         self.trans_list = list()
 
     # get a list of transactions and execute them.
-    def execute_transactions(self):
-        for trans in self.transaction_list():
+    def execute_transactions(self, csvfile):
+        for trans in self.transaction_list(csvfile):
             curr_rate = self.exchanges.get_rate()
             trans.execute(curr_rate)
             self.trans_list.append(trans)
 
-    def transaction_list(self):
-        with open(self.file_name, "rb") as csvfile:
-            datareader = csv.reader(csvfile)
-            for row in datareader:
-                trans = Transaction(row)
-                yield trans
+    def transaction_list(self, csvfile):
+        csvfile.seek(0)
+        row=''
+        for char in csvfile.read().decode("utf-8"):
+            if char == '\n':
+              yield Transaction(row)
+              row = ''
+              
+            else:
+                row += char
+        
+        if row:
+            yield Transaction(row)
+        return

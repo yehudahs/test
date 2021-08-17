@@ -13,4 +13,4 @@ class ExchangeRates():
     def get_rate(self):
         r = requests.get(url = ExchangeRates.EXCHANGE_URL, params = ExchangeRates.EXCHANGE_PARAMS)
         response = r.json()
-        return int(response.rates.USD)
+        return float(response['rates']['USD'])

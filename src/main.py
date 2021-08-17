@@ -4,7 +4,7 @@ import requests
 from flask import Flask, request, redirect, jsonify
 from werkzeug.utils import secure_filename
 
-from src.transactions_db import TransactionsDB
+from transactions_db import TransactionsDB
 
 app = Flask(__name__)
 
@@ -32,15 +32,14 @@ def upload_file():
         resp.status_code = 400
         return resp
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        transactions = TransactionsDB(filename)
-        transactions.execute_transactions()
-        
+        transactions = TransactionsDB()
+        transactions.execute_transactions(file)
+        message = {x.id: {"status": x.status, "price": x.trans_price, "total": x.total} for x in transactions.trans_list}
         # r = requests.get(url = EXCHANGE_URL, params = EXCHANGE_PARAMS)
         # extracting data in json format
         # data = r.json()
         # print('got data: ' + str(data))
-        resp = jsonify({'message' : 'File successfully uploaded'})
+        resp = jsonify(message)
         resp.status_code = 201
         return resp
     else:
