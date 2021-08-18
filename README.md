@@ -16,3 +16,7 @@ notes:
 5. what happens if only half of the matching is met ? means that not all the amount can be found, 
    only part of it... I took into account that only part of the matching is happening... (buy/sell 
    what you can...) and the transaction is defined as "Executed"
+
+
+building docker:
+sudo docker build -t test .

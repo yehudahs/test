@@ -9,11 +9,6 @@ from transactions_db import TransactionsDB
 app = Flask(__name__)
 
 ALLOWED_EXTENSIONS = set(['csv'])
-EXCHANGE_URL = 'http://api.exchangeratesapi.io/v1/latest'
-EXCHANGE_PARAMS = {
-    'access_key': 'd8ae73d38274fbf44d758e03560791c5',
-    'symbols': 'EUR,USD'
-}
 # exchange_url = http://api.exchangeratesapi.io/v1/latest?access_key=d8ae73d38274fbf44d758e03560791c5&symbols=EUR,USD
 
 def allowed_file(filename):
@@ -50,4 +45,4 @@ def upload_file():
             return resp
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
