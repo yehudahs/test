@@ -18,5 +18,11 @@ notes:
    what you can...) and the transaction is defined as "Executed"
 
 
-building docker:
+- building docker:
 sudo docker build -t test .
+- to run, check that it running and the port number
+sudo docker run -d -p 5000:5000 test
+sudo docker logs <docker>
+get the id and add it to the test_step2.py
+taken from:
+https://stackoverflow.com/questions/30323224/deploying-a-minimal-flask-app-in-docker-server-connection-issues
