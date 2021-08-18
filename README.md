@@ -16,13 +16,14 @@ notes:
 5. what happens if only half of the matching is met ? means that not all the amount can be found, 
    only part of it... I took into account that only part of the matching is happening... (buy/sell 
    what you can...) and the transaction is defined as "Executed"
+6. Docker:
+   - building docker:
+   sudo docker build -t test .
+   - to run, check that it running and the port number
+   sudo docker run -d -p 5000:5000 test
+   sudo docker logs <docker>
+   get the id and add it to the test_step2.py
+   taken from:
+   https://stackoverflow.com/questions/30323224/deploying-a-minimal-flask-app-in-docker-server-connection-issues
 
-
-- building docker:
-sudo docker build -t test .
-- to run, check that it running and the port number
-sudo docker run -d -p 5000:5000 test
-sudo docker logs <docker>
-get the id and add it to the test_step2.py
-taken from:
-https://stackoverflow.com/questions/30323224/deploying-a-minimal-flask-app-in-docker-server-connection-issues
+   need to understand better how to use the ports in the docker.
