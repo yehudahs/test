@@ -12,10 +12,17 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "run transactions",
+            "name": "run step1",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/tests/run_transactions.py",
+            "program": "${workspaceFolder}/tests/run_step1.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "run step2",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/tests/run_step2.py",
             "console": "integratedTerminal"
         }
     ]

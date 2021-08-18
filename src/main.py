@@ -22,30 +22,32 @@ def allowed_file(filename):
 @app.route('/api/trade', methods=['POST'])
 def upload_file():
     # check if the post request has the file part
-    if 'transactions.csv' not in request.files:
-        resp = jsonify({'message' : 'No file part in the request'})
+    if len(request.files) != 1:
+        resp = jsonify({'message' : 'too much or no files error, need to have only 1 file'})
         resp.status_code = 400
         return resp
-    file = request.files['transactions.csv']
-    if file.filename == '':
-        resp = jsonify({'message' : 'No file selected for uploading'})
-        resp.status_code = 400
-        return resp
-    if file and allowed_file(file.filename):
-        transactions = TransactionsDB()
-        transactions.execute_transactions(file)
-        message = {x.id: {"status": x.status, "price": x.trans_price, "total": x.total} for x in transactions.trans_list}
-        # r = requests.get(url = EXCHANGE_URL, params = EXCHANGE_PARAMS)
-        # extracting data in json format
-        # data = r.json()
-        # print('got data: ' + str(data))
-        resp = jsonify(message)
-        resp.status_code = 201
-        return resp
-    else:
-        resp = jsonify({'message' : 'Allowed file types are txt, pdf, png, jpg, jpeg, gif'})
-        resp.status_code = 400
-        return resp
+
+    for filename, file in request.files.items():
+        print("working on " + filename)
+        if file and allowed_file(file.filename):
+            transactions = TransactionsDB()
+            trans_db = transactions.execute_transactions(file)
+            buy_dict = {x.id: x.report() for x in trans_db['Buy']}
+            sell_dict = {x.id: x.report() for x in trans_db['Sell']}
+            denied_dict = {x.id: x.report() for x in trans_db['Denied']}
+            market_dict = {x.id: x.report() for x in trans_db['Market']}
+            return_msg = {**buy_dict, **sell_dict, **denied_dict, **market_dict}
+            # r = requests.get(url = EXCHANGE_URL, params = EXCHANGE_PARAMS)
+            # extracting data in json format
+            # data = r.json()
+            # print('got data: ' + str(data))
+            resp = jsonify(return_msg)
+            resp.status_code = 201
+            return resp
+        else:
+            resp = jsonify({'message' : 'Allowed file types are .csv'})
+            resp.status_code = 400
+            return resp
 
 if __name__ == "__main__":
     app.run()
